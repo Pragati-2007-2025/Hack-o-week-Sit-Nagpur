@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WANDERLUST | Travel Stories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #faf7f2;
+            --bg-warm: #f0ebe3;
+            --bg-dark: #1a1915;
+            --text-dark: #1a1915;
+            --text-muted: #6b6560;
+            --text-light: #9a958e;
+            --accent-rust: #c45d3a;
+            --accent-sage: #7a8b6e;
+            --accent-gold: #c9a84c;
+            --accent-navy: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(250, 247, 242, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 3rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-rust);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-rust);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(26, 25, 21, 0.3) 0%, 
+                rgba(26, 25, 21, 0.1) 50%,
+                rgba(26, 25, 21, 0.7) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.3s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.6s forwards;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.9s forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.2s forwards;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, white, transparent);
+            margin: 0 auto;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        /* Section Intro */
+        .section-intro {
+            padding: 6rem 2rem;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--accent-rust);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Story Cards */
+        .stories-container {
+            padding: 0 2rem 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Story 1: Large Image Left */
+        .story {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 8rem;
+        }
+
+        .story.reverse {
+            grid-template-columns: 1fr 1.2fr;
+        }
+
+        .story.reverse .story-image {
+            order: 2;
+        }
+
+        .story-image {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .story:hover .story-image img {
+            transform: scale(1.05);
+        }
+
+        .story-image::after {
+            content: '';
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            right: -1.5rem;
+            bottom: -1.5rem;
+            border: 1px solid var(--accent-gold);
+            z-index: -1;
+        }
+
+        .story-content {
+            padding: 2rem 0;
+        }
+
+        .story-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 400;
+            color: var(--bg-warm);
+            line-height: 1;
+            margin-bottom: -1rem;
+        }
+
+        .story-location {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--accent-rust);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .story-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-excerpt {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .story-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--bg-warm);
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--accent-rust);
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .story-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--text-dark);
+            transition: all 0.3s;
+        }
+
+        .story-btn:hover {
+            color: var(--accent-rust);
+            border-color: var(--accent-rust);
+        }
+
+        .story-btn svg {
+            transition: transform 0.3s;
+        }
+
+        .story-btn:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* Full Width Story */
+        .story.full-width {
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin-bottom: 0;
+        }
+
+        .story.full-width .story-image {
+            aspect-ratio: 21/9;
+        }
+
+        .story.full-width .story-content {
+            background: var(--bg-dark);
+            color: white;
+            padding: 4rem;
+            margin: -2rem 4rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .story.full-width .story-number {
+            color: rgba(255,255,255,0.1);
+        }
+
+        .story.full-width .story-location {
+            color: var(--accent-gold);
+        }
+
+        .story.full-width .story-excerpt {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .story.full-width .story-meta {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .story.full-width .story-btn {
+            color: white;
+            border-color: white;
+        }
+
+        .story.full-width .story-btn:hover {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        /* Gallery Strip */
+        .gallery-strip {
+            display: flex;
+            gap: 1rem;
+            padding: 0 2rem;
+            margin-bottom: 8rem;
+        }
+
+        .gallery-strip img {
+            flex: 1;
+            height: 300px;
+            object-fit: cover;
+            filter: grayscale(30%);
+            transition: all 0.4s;
+        }
+
+        .gallery-strip img:hover {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: var(--bg-dark);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .quote-mark {
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-bottom: -2rem;
+        }
+
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .quote-author {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: var(--accent-rust);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-text {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .newsletter-btn {
+            padding: 1rem 2rem;
+            background: var(--bg-dark);
+            color: white;
+            border: none;
+            font-family: inherit;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .newsletter-btn:hover {
+            background: var(--accent-gold);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            max-width: 350px;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-title {
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: rgba(255,255,255,0.4);
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .story {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .story.reverse {
+                grid-template-columns: 1fr;
+            }
+
+            .story.reverse .story-image {
+                order: 0;
+            }
+
+            .story-image::after {
+                display: none;
+            }
+
+            .story.full-width .story-content {
+                margin: -1rem 2rem 2rem;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .gallery-strip {
+                flex-direction: column;
+            }
+
+            .gallery-strip img {
+                height: 200px;
+            }
+
+            .story.full-width .story-content {
+                margin: 0;
+                padding: 2rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo">WANDERLUST</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#stories">Stories</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80" alt="Mountain landscape">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">A Journey of Discovery</p>
+            <h1 class="hero-title">Stories From<br>The Road</h1>
+            <p class="hero-tagline">Three continents, countless memories, and the moments that changed everything.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to Explore</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Stories -->
+    <section id="stories">
+        <div class="section-intro reveal">
+            <p class="section-label">The Chronicles</p>
+            <h2 class="section-title">Every Journey Tells a Story</h2>
+            <p class="section-text">From the misty peaks of the Himalayas to the sun-drenched coasts of Portugal, these are the moments that made me who I am.</p>
+        </div>
+
+        <div class="stories-container">
+
+            <!-- Story 1: Japan -->
+            <article class="story reveal">
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan">
+                </div>
+                <div class="story-content">
+                    <div class="story-number">01</div>
+                    <p class="story-location">Japan</p>
+                    <h3 class="story-title">Where Tradition Meets Tomorrow</h3>
+                    <p class="story-date">October 2024</p>
+                    <p class="story-excerpt">In the quiet hours before dawn, I found myself alone in the bamboo groves of Arashiyama. The stalks towered above me, swaying gently in the morning breeze, creating a sound like whispers from another world. This was Japan—a place where ancient rituals and neon lights coexist in perfect harmony.</p>
+                    <div class="story-meta">
+                        <div class="meta-item">
+                            <div class="meta-value">21</div>
+                            <div class="meta-label">Days</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value">9</div>
+                            <div class="meta-label">Cities</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value">47</div>
+                            <div class="meta-label">Temples</div>
+                        </div>
+                    </div>
+                    <a href="#" class="story-btn">
+                        Read Full Story
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <!-- Story 2: Iceland (Full Width) -->
+            <article class="story full-width reveal">
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=1920&q=80" alt="Iceland">
+                </div>
+                <div class="story-content">
+                    <div class="story-number">02</div>
+                    <p class="story-location">Iceland</p>
+                    <h3 class="story-title">Fire, Ice, and the Northern Lights</h3>
+                    <p class="story-date">February 2025</p>
+                    <p class="story-excerpt">The landscape didn't just surprise me—it overwhelmed every sense I had. Black sand beaches stretched endlessly beneath dramatic cliffs, while geysers erupted with prehistoric fury. And then, on my last night, the sky came alive. Green ribbons of aurora danced overhead, a cosmic ballet that made me feel impossibly small and infinitely connected all at once.</p>
+                    <div class="story-meta">
+                        <div class="meta-item">
+                            <div class="meta-value">14</div>
+                            <div class="meta-label">Days</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value">3,400</div>
+                            <div class="meta-label">Kilometers</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value">∞</div>
+                            <div class="meta-label">Photos</div>
+                        </div>
+                    </div>
+                    <a href="#" class="story-btn">
+                        Read Full Story
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <!-- Gallery Strip -->
+            <div class="gallery-strip reveal">
+                <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Switzerland">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80" alt="Norway">
+                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80" alt="Greece">
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali">
+            </div>
+
+            <!-- Story 3: Morocco -->
+            <article class="story reverse reveal">
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800&q=80" alt="Marrakech, Morocco">
+                </div>
+                <div class="story-content">
+                    <div class="story-number">03</div>
+                    <p class="story-location">Morocco</p>
+                    <h3 class="story-title">The Colors of the Medina</h3>
+                    <p class="story-date">May 2025</p>
+                    <p class="story-excerpt">Lost in the labyrinthine alleys of Marrakech, I discovered that getting truly lost is sometimes the only way forward. The medina unfolded like a living tapestry—spice merchants calling out their wares, artisans shaping copper into intricate lanterns, and the ever-present aroma of cumin and saffron wafting through the air.</p>
+                    <div class="story-meta">
+                        <div class="meta-item">
+                            <div class="meta-value">10</div>
+                            <div class="meta-label">Days</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value">4</div>
+                            <div class="meta-label">Cities</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value">200+</div>
+                            <div class="meta-label">Teas</div>
+                        </div>
+                    </div>
+                    <a href="#" class="story-btn">
+                        Read Full Story
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="quote-section reveal">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">Travel isn't always about the places you go. Sometimes it's about the person you become along the way.</p>
+        <p class="quote-author">— Every Wanderer Ever</p>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" id="contact">
+        <h2 class="newsletter-title">Join the Journey</h2>
+        <p class="newsletter-text">Get new stories, travel tips, and hidden gems delivered to your inbox every week.</p>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email">
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">WANDERLUST</div>
+                <p class="footer-text">Sharing stories from the road since 2024. Every journey is a story waiting to be told.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Explore</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Japan Series</a></li>
+                    <li><a href="#">Iceland Diaries</a></li>
+                    <li><a href="#">Morocco Stories</a></li>
+                    <li><a href="#">All Destinations</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Me</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>2026 Wanderlust. All rights reserved.</span>
+            <div class="social-links">
+                <a href="#">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="#">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                </a>
+                <a href="#">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll navigation effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Reveal on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

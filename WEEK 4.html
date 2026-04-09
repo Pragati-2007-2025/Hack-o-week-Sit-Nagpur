@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERROIR | Artisan Goods</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #faf8f5;
+            --bg-warm: #f5f0e8;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #6b6b6b;
+            --text-light: #999;
+            --accent-terracotta: #c45d3a;
+            --accent-sage: #7d8c6e;
+            --accent-sand: #d4c4a8;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-hover: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-cream);
+            padding: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-terracotta);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cart-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--text-dark);
+            color: var(--bg-cream);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            font-family: inherit;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: var(--accent-terracotta);
+        }
+
+        .cart-count {
+            background: var(--accent-terracotta);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 500px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-terracotta);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--accent-terracotta);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent-terracotta);
+        }
+
+        .hero-text {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-image {
+            position: relative;
+            aspect-ratio: 4/5;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--accent-sand);
+            z-index: -1;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-tab {
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--text-light);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-tab:first-child {
+            background: var(--text-dark);
+            color: var(--bg-cream);
+            border-color: var(--text-dark);
+        }
+
+        .filter-tab:hover {
+            border-color: var(--text-dark);
+        }
+
+        .sort-select {
+            padding: 0.6rem 2rem 0.6rem 1rem;
+            border: 1px solid var(--text-light);
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b6b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+        }
+
+        /* Products Grid */
+        .products-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--bg-card);
+            position: relative;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-image {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-warm);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .badge-new {
+            background: var(--accent-sage);
+            color: white;
+        }
+
+        .badge-sale {
+            background: var(--accent-terracotta);
+            color: white;
+        }
+
+        .badge-limited {
+            background: var(--text-dark);
+            color: white;
+        }
+
+        .quick-actions {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .quick-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quick-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-btn-primary {
+            background: var(--text-dark);
+            color: var(--bg-cream);
+        }
+
+        .quick-btn-primary:hover {
+            background: var(--accent-terracotta);
+        }
+
+        .quick-btn-secondary {
+            background: white;
+            color: var(--text-dark);
+            flex: 0 0 auto;
+            padding: 0.8rem 1rem;
+        }
+
+        .quick-btn-secondary:hover {
+            background: var(--accent-sand);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .product-price .original {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-right: 0.5rem;
+        }
+
+        .product-price .sale {
+            color: var(--accent-terracotta);
+        }
+
+        .product-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            color: var(--accent-sand);
+            font-size: 0.9rem;
+        }
+
+        .star.filled {
+            color: var(--accent-terracotta);
+        }
+
+        /* Featured Large Card */
+        .product-card.large {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .product-card.large .product-image {
+            aspect-ratio: auto;
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .product-card.large .product-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .product-card.large .product-name {
+            font-size: 2rem;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: var(--text-dark);
+            color: var(--bg-cream);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .newsletter-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-text {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .newsletter-btn {
+            padding: 1rem 2rem;
+            background: var(--accent-terracotta);
+            border: none;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .newsletter-btn:hover {
+            background: var(--accent-sage);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-warm);
+            padding: 4rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .footer-title {
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-terracotta);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-image {
+                order: -1;
+                max-height: 400px;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .product-card.large {
+                grid-column: span 1;
+                grid-template-columns: 1fr;
+            }
+
+            .product-card.large .product-image {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+        .product-card:nth-child(7) { animation-delay: 0.7s; }
+        .product-card:nth-child(8) { animation-delay: 0.8s; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo">TERROIR</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Collections</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="cart-btn">
+                Cart
+                <span class="cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">New Collection</span>
+            <h1 class="hero-title">Handcrafted with <em>intention</em></h1>
+            <p class="hero-text">Discover our curated selection of artisan goods, each piece thoughtfully made by skilled craftspeople using traditional techniques and sustainable materials.</p>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80" alt="Artisan ceramics">
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-tabs">
+            <button class="filter-tab">All</button>
+            <button class="filter-tab">Ceramics</button>
+            <button class="filter-tab">Textiles</button>
+            <button class="filter-tab">Candles</button>
+            <button class="filter-tab">Plants</button>
+        </div>
+        <select class="sort-select">
+            <option>Sort by: Featured</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+            <option>Newest First</option>
+        </select>
+    </div>
+
+    <!-- Products -->
+    <section class="products-section">
+        <div class="products-grid">
+
+            <!-- Featured Product -->
+            <div class="product-card large">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80" alt="Ceramic Vase">
+                    <span class="product-badge badge-limited">Limited Edition</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Ceramics</span>
+                    <h3 class="product-name">Wabi-Sabi Stoneware Vase</h3>
+                    <p class="product-desc">Hand-thrown on the wheel, each vase features unique glaze variations that celebrate imperfection. Perfect for dried flowers or as a standalone sculptural piece.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$185</span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1602607753862-3c8d3a06b8b1?w=600&q=80" alt="Soy Candle">
+                    <span class="product-badge badge-new">New</span>
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Candles</span>
+                    <h3 class="product-name">Forest Floor Soy Candle</h3>
+                    <p class="product-desc">Notes of cedar, moss, and wild bergamot. 50+ hour burn time.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$38</span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=600&q=80" alt="Linen Napkins">
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Textiles</span>
+                    <h3 class="product-name">Stonewashed Linen Set</h3>
+                    <p class="product-desc">Set of 4 napkins in natural flax. Pre-washed for softness.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$52</span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600&q=80" alt="Plant">
+                    <span class="product-badge badge-sale">Sale</span>
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Plants</span>
+                    <h3 class="product-name">Monstera Deliciosa</h3>
+                    <p class="product-desc">3-year established plant in handwoven basket. 24" tall.</p>
+                    <div class="product-footer">
+                        <span class="product-price"><span class="original">$95</span><span class="sale">$78</span></span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1610701596061-2ecf227e85b2?w=600&q=80" alt="Ceramic Bowl">
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Ceramics</span>
+                    <h3 class="product-name">Speckled Serving Bowl</h3>
+                    <p class="product-desc">Wide-rimmed bowl perfect for salads or pasta. Dishwasher safe.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$68</span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=600&q=80" alt="Soap">
+                    <span class="product-badge badge-new">New</span>
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Bath</span>
+                    <h3 class="product-name">Wild Honey Soap Trio</h3>
+                    <p class="product-desc">Cold-pressed with raw honey and oat milk. Set of 3 bars.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$24</span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Wood Bowl">
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Wood</span>
+                    <h3 class="product-name">Olive Wood Cutting Board</h3>
+                    <p class="product-desc">Hand-carved from reclaimed olive wood. Each grain is unique.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$125</span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1594924934683-86e3e1a00a4c?w=600&q=80" alt="Diffuser">
+                    <span class="product-badge badge-sale">Sale</span>
+                    <div class="quick-actions">
+                        <button class="quick-btn quick-btn-primary">Add to Cart</button>
+                        <button class="quick-btn quick-btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category">Home</span>
+                    <h3 class="product-name">Reed Diffuser Set</h3>
+                    <p class="product-desc">Black amber & vanilla. Includes ceramic vessel and 6 reeds.</p>
+                    <div class="product-footer">
+                        <span class="product-price"><span class="original">$45</span><span class="sale">$36</span></span>
+                        <div class="product-rating">
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                            <span class="star filled">★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="newsletter-inner">
+            <h2 class="newsletter-title">Join Our Circle</h2>
+            <p class="newsletter-text">Get early access to new arrivals, artisan stories, and exclusive offers.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Your email address">
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">TERROIR</div>
+                <p class="footer-text">Curating handmade goods from independent artisans who share our commitment to quality, sustainability, and timeless design.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="#">All Products</a></li>
+                    <li><a href="#">Ceramics</a></li>
+                    <li><a href="#">Textiles</a></li>
+                    <li><a href="#">Candles</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Artisans</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Help</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Care Guide</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>2026 Terroir. All rights reserved.</span>
+            <span>Made with care in small batches</span>
+        </div>
+    </footer>
+
+</body>
+</html>

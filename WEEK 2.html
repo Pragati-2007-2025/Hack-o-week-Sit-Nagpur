@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>creTW | Culinary Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #141414;
+            --accent-gold: #c9a227;
+            --accent-copper: #b87333;
+            --text-primary: #f5f5f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-gold);
+            border-radius: 3px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.03) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(5rem, 15vw, 12rem);
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 50%, var(--accent-copper) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-style: italic;
+            color: var(--text-secondary);
+            letter-spacing: 0.5em;
+            text-transform: lowercase;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+        }
+
+        /* Hero Banner Image */
+        .hero-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.15;
+            filter: grayscale(50%);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 20%, transparent 80%, var(--bg-primary) 100%);
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--accent-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--accent-gold);
+        }
+
+        .nav-btn.active::after {
+            width: 100%;
+        }
+
+        /* Menu Section */
+        .menu-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .category-title::before {
+            content: attr(data-num);
+            position: absolute;
+            left: -3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            opacity: 0.5;
+        }
+
+        .category-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .menu-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: 2;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(201, 162, 39, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .menu-item:hover::before {
+            transform: translateX(0);
+        }
+
+        /* Dish Image */
+        .dish-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dish-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-item:hover .dish-image img {
+            transform: scale(1.08);
+        }
+
+        .dish-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, var(--bg-card), transparent);
+            pointer-events: none;
+        }
+
+        .item-content {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            gap: 1rem;
+        }
+
+        .item-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .item-price {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .item-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            color: var(--accent-copper);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Featured Item */
+        .featured-item {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(201, 162, 39, 0.05) 100%);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        .featured-item .featured-image {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .featured-item .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-item .item-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .featured-badge {
+            display: inline-block;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            padding: 0.3rem 1rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 1rem;
+        }
+
+        .featured-item .item-name {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-item .item-price {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            margin: 4rem 0;
+            padding: 4rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .gallery-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease, filter 0.5s ease;
+            filter: grayscale(30%);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            letter-spacing: 0.3em;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                letter-spacing: 0.15em;
+            }
+
+            .category-title::before {
+                display: none;
+            }
+
+            .featured-item {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-item .featured-image {
+                min-height: 250px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.65rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dish-image {
+                height: 200px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-banner">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80" alt="Fine Dining">
+        </div>
+        <div class="hero-content">
+            <h1 class="logo">creTW</h1>
+            <p class="tagline">where flavor meets artistry</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>EXPLORE</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Category Navigation -->
+    <nav class="category-nav">
+        <div class="nav-inner">
+            <button class="nav-btn active" data-target="starters">Starters</button>
+            <button class="nav-btn" data-target="mains">Mains</button>
+            <button class="nav-btn" data-target="pasta">Pasta</button>
+            <button class="nav-btn" data-target="desserts">Desserts</button>
+            <button class="nav-btn" data-target="drinks">Drinks</button>
+        </div>
+    </nav>
+
+    <!-- Menu Section -->
+    <main class="menu-section">
+
+        <!-- STARTERS -->
+        <section id="starters" class="menu-category fade-in">
+            <h2 class="category-title" data-num="01">Starters</h2>
+            <p class="category-subtitle">Begin your journey with these tantalizing bites</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=600&q=80" alt="Truffle Arancini">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Truffle Arancini</h3>
+                            <span class="item-price">$14</span>
+                        </div>
+                        <p class="item-desc">Crispy risotto balls with black truffle, mozzarella center, served with aioli</p>
+                        <div class="item-tags">
+                            <span class="tag">Vegetarian</span>
+                            <span class="tag">Signature</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80" alt="Tuna Tartare">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Tuna Tartare</h3>
+                            <span class="item-price">$18</span>
+                        </div>
+                        <p class="item-desc">Fresh yellowfin tuna, avocado mousse, sesame, wonton crisps</p>
+                        <div class="item-tags">
+                            <span class="tag">Gluten Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=600&q=80" alt="Burrata">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Burrata & Fig</h3>
+                            <span class="item-price">$16</span>
+                        </div>
+                        <p class="item-desc">Creamy burrata, seasonal figs, prosciutto, aged balsamic, basil oil</p>
+                        <div class="item-tags">
+                            <span class="tag">Seasonal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80" alt="Calamari">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Crispy Calamari</h3>
+                            <span class="item-price">$15</span>
+                        </div>
+                        <p class="item-desc">Lightly fried squid rings, spicy marinara, lemon zest aioli</p>
+                        <div class="item-tags">
+                            <span class="tag">Spicy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAINS -->
+        <section id="mains" class="menu-category fade-in">
+            <h2 class="category-title" data-num="02">Mains</h2>
+            <p class="category-subtitle">Hearty plates crafted with passion</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item featured-item">
+                    <div class="featured-image">
+                        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&q=80" alt="Wagyu Ribeye">
+                    </div>
+                    <div class="item-info">
+                        <span class="featured-badge">Chef's Special</span>
+                        <h3 class="item-name">Wagyu Ribeye</h3>
+                        <span class="item-price">$65</span>
+                        <p class="item-desc">A5 Japanese wagyu, truffle mash, roasted garlic butter, seasonal vegetables, red wine jus</p>
+                        <div class="item-tags">
+                            <span class="tag">Premium</span>
+                            <span class="tag">500g</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Salmon">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Pan-Seared Salmon</h3>
+                            <span class="item-price">$32</span>
+                        </div>
+                        <p class="item-desc">Atlantic salmon, lemon butter sauce, asparagus, fingerling potatoes</p>
+                        <div class="item-tags">
+                            <span class="tag">Gluten Free</span>
+                            <span class="tag">Sustainable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80" alt="Roasted Chicken">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Herb Roasted Chicken</h3>
+                            <span class="item-price">$28</span>
+                        </div>
+                        <p class="item-desc">Free-range chicken, rosemary jus, root vegetables, Yukon gold puree</p>
+                        <div class="item-tags">
+                            <span class="tag">Comfort</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1514516345957-556ca7d90a29?w=600&q=80" alt="Lamb">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Lamb Rack</h3>
+                            <span class="item-price">$45</span>
+                        </div>
+                        <p class="item-desc">New Zealand lamb, mint pesto, roasted baby carrots, potato gratin</p>
+                        <div class="item-tags">
+                            <span class="tag">Premium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&q=80" alt="Risotto">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Wild Mushroom Risotto</h3>
+                            <span class="item-price">$24</span>
+                        </div>
+                        <p class="item-desc">Arborio rice, porcini, shiitake, truffle oil, aged parmesan, fresh herbs</p>
+                        <div class="item-tags">
+                            <span class="tag">Vegetarian</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASTA -->
+        <section id="pasta" class="menu-category fade-in">
+            <h2 class="category-title" data-num="03">Pasta</h2>
+            <p class="category-subtitle">Handmade daily, just like nonna intended</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80" alt="Tagliatelle">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Black Truffle Tagliatelle</h3>
+                            <span class="item-price">$34</span>
+                        </div>
+                        <p class="item-desc">Fresh pasta, black truffle cream, parmesan, chives</p>
+                        <div class="item-tags">
+                            <span class="tag">Signature</span>
+                            <span class="tag">Rich</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=600&q=80" alt="Lobster">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Lobster Linguine</h3>
+                            <span class="item-price">$42</span>
+                        </div>
+                        <p class="item-desc">Maine lobster, cherry tomatoes, garlic, white wine, fresh basil</p>
+                        <div class="item-tags">
+                            <span class="tag">Indulgent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=80" alt="Cacio e Pepe">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Cacio e Pepe</h3>
+                            <span class="item-price">$22</span>
+                        </div>
+                        <p class="item-desc">Tonnarelli pasta, pecorino romano, black pepper, olive oil</p>
+                        <div class="item-tags">
+                            <span class="tag">Classic</span>
+                            <span class="tag">Simple</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1621996654024-5cd3d672b4ae?w=600&q=80" alt="Bolognese">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Bolognese</h3>
+                            <span class="item-price">$26</span>
+                        </div>
+                        <p class="item-desc">Slow-cooked beef & pork ragu, rigatoni, parmesan, fresh herbs</p>
+                        <div class="item-tags">
+                            <span class="tag">Hearty</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DESSERTS -->
+        <section id="desserts" class="menu-category fade-in">
+            <h2 class="category-title" data-num="04">Desserts</h2>
+            <p class="category-subtitle">Sweet endings to remember</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=80" alt="Tiramisu">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Tiramisu</h3>
+                            <span class="item-price">$14</span>
+                        </div>
+                        <p class="item-desc">Classic Italian dessert, mascarpone, espresso-soaked ladyfingers, cocoa</p>
+                        <div class="item-tags">
+                            <span class="tag">Signature</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&q=80" alt="Chocolate">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Chocolate Fondant</h3>
+                            <span class="item-price">$16</span>
+                        </div>
+                        <p class="item-desc">Warm chocolate cake, molten center, vanilla bean ice cream, berries</p>
+                        <div class="item-tags">
+                            <span class="tag">Indulgent</span>
+                            <span class="tag">Melts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80" alt="Panna Cotta">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Panna Cotta</h3>
+                            <span class="item-price">$12</span>
+                        </div>
+                        <p class="item-desc">Vanilla cream, passion fruit coulis, fresh mint, tuile cookie</p>
+                        <div class="item-tags">
+                            <span class="tag">Light</span>
+                            <span class="tag">Gluten Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=600&q=80" alt="Creme Brulee">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Creme Brulee</h3>
+                            <span class="item-price">$13</span>
+                        </div>
+                        <p class="item-desc">Madagascar vanilla custard, caramelized sugar crust, fresh berries</p>
+                        <div class="item-tags">
+                            <span class="tag">Classic</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DRINKS -->
+        <section id="drinks" class="menu-category fade-in">
+            <h2 class="category-title" data-num="05">Drinks</h2>
+            <p class="category-subtitle">Curated libations to complement your meal</p>
+            
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80" alt="Martini">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">creTW Signature Martini</h3>
+                            <span class="item-price">$18</span>
+                        </div>
+                        <p class="item-desc">Grey Goose vodka, elderflower, cucumber, citrus, gold flakes</p>
+                        <div class="item-tags">
+                            <span class="tag">House Special</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80" alt="Old Fashioned">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Smoky Old Fashioned</h3>
+                            <span class="item-price">$16</span>
+                        </div>
+                        <p class="item-desc">Woodford Reserve bourbon, bitters, smoked orange, demerara</p>
+                        <div class="item-tags">
+                            <span class="tag">Whiskey</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1550508776-b6a354f3b8a8?w=600&q=80" alt="Rose">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Sparkling Rose Flight</h3>
+                            <span class="item-price">$24</span>
+                        </div>
+                        <p class="item-desc">Selection of three premium rose champagnes, tasting portion</p>
+                        <div class="item-tags">
+                            <span class="tag">Elegant</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Espresso">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Craft Espresso</h3>
+                            <span class="item-price">$6</span>
+                        </div>
+                        <p class="item-desc">Double shot, single origin Ethiopian beans, perfect extraction</p>
+                        <div class="item-tags">
+                            <span class="tag">Coffee</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="dish-image">
+                        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&q=80" alt="Lemonade">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Lavender Lemonade</h3>
+                            <span class="item-price">$8</span>
+                        </div>
+                        <p class="item-desc">House-made lavender syrup, fresh lemon, sparkling water</p>
+                        <div class="item-tags">
+                            <span class="tag">Mocktail</span>
+                            <span class="tag">Refreshing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">creTW</div>
+        <p class="footer-text">123 Culinary Avenue, Flavor Town &bull; Open Daily 5PM - 11PM</p>
+        <p class="footer-text" style="margin-top: 1rem;">Reservations: (555) 123-CHEF</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const target = document.getElementById(btn.dataset.target);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('.menu-category');
+        const navBtns = document.querySelectorAll('.nav-btn');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.target === current) {
+                    btn.classList.add('active');
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
